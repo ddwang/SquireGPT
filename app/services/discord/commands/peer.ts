@@ -5,7 +5,7 @@ import { agentConfig } from "../../../config/index";
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("chat")
+        .setName("peer")
         .setDescription("Ask PeerBot a question.")
         .addStringOption((option) =>
             option.setName("question")
