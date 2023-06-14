@@ -1,4 +1,4 @@
-import { prompt } from 'enquirer';
+import { input, select } from '@inquirer/prompts';
 import { ConversationAgent } from './agents/index';
 import { processDocuments } from './agents/loaders/utils';
 import { agentConfig } from './config/index';
@@ -6,20 +6,18 @@ import { runTask } from './agents/tasker';
 
 export async function startReadline(server: any) {
     while (true) {
-        const response = await prompt<{ option: string }>({
-            type: 'select', // Change this line to use 'list' instead of 'select'
-            name: 'option',
+        const response = await select({
             message: 'Please choose an option:',
             choices: [
-                { name: '1', message: '1. Load documents via directory' },
-                { name: '2', message: '2. Chat with agent' }, // Add this line
-                { name: '3', message: '4. Babyagi' }, // Add this line
-                { name: '4', message: '3. Kill server' }, // Add this line
+                { name: '1. Load documents via directory', value: '1' },
+                { name: '2. Chat with agent', value: '2' }, // Add this line
+                { name: '3. Babyagi', value: '3' }, // Add this line
+                { name: '4. Kill server', value: '4' }, // Add this line
             ],
         });
 
         // Process the command
-        const shouldExit = await processCommand(response.option, server);
+        const shouldExit = await processCommand(response, server);
 
         if (shouldExit) {
             break;
@@ -30,31 +28,20 @@ export async function startReadline(server: any) {
 // Function to process CLI commands
 async function processCommand(command: string, server: any): Promise<boolean> {
 
-    const ora = await import('ora');
-
-
     switch (command) {
         case '1':
-            const dirPath = await prompt<{ message: string }>({
-                type: 'input',
-                name: 'message',
+            const dirPath = await input({
                 message: 'Enter the path of the directory to index:',
             });
-            await processDocuments(dirPath.message);
+            await processDocuments(dirPath);
             break;
         case '2':
-            const chatResponse = await prompt<{ message: string }>({
-                type: 'input',
-                name: 'message',
+            const chatResponse = await input({
                 message: 'Chat with Agent:',
             });
             const chat = new ConversationAgent(agentConfig.context);
 
-            const spinner = ora.default('Processing your message...').start();
-
-            const response = await chat.getResponse(chatResponse.message);
-
-            spinner.stop();
+            const response = await chat.getResponse(chatResponse);
 
             // add line
             console.log(`Agent: ------------------------------------`);
@@ -64,12 +51,10 @@ async function processCommand(command: string, server: any): Promise<boolean> {
             console.log(`----------------------------------------`);
             break;
         case '3':
-            const objective = await prompt<{ message: string }>({
-                type: 'input',
-                name: 'message',
+            const objective = await input({
                 message: 'What would you like to solve?',
             });
-            await runTask(objective.message)
+            await runTask(objective)
 
             break;
 

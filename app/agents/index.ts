@@ -8,10 +8,10 @@ export class ConversationAgent {
   }
 
   async getResponse(question: string) {
-    const { OpenAI } = await import('langchain/llms');
-    const { OpenAIEmbeddings } = await import("langchain/embeddings");
-    const { PineconeStore } = await import("langchain/vectorstores");
-    const { ChatVectorDBQAChain } = await import("langchain/chains");
+    const { OpenAI } = await import('langchain/llms/openai');
+    const { OpenAIEmbeddings } = await import("langchain/embeddings/openai");
+    const { PineconeStore } = await import("langchain/vectorstores/pinecone");
+    const { ConversationalRetrievalQAChain } = await import("langchain/chains");
 
     const vectorStore = await PineconeStore.fromExistingIndex(
       new OpenAIEmbeddings(),
@@ -20,10 +20,13 @@ export class ConversationAgent {
 
     const model = new OpenAI({ modelName: process.env.OPENAI_MODEL });
 
-    const chain = ChatVectorDBQAChain.fromLLM(model, vectorStore, {
-      returnSourceDocuments: true,
-      qaTemplate: this.template,
-    });
+    const chain = ConversationalRetrievalQAChain.fromLLM(
+      model,
+      vectorStore.asRetriever(),
+      {
+        returnSourceDocuments: true
+      });
+    chain.verbose = true
 
     const response = await chain.call({
       question: question,

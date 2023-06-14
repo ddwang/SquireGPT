@@ -70,7 +70,7 @@ You can choose to edit the personality of the agent by changing the context with
 PINECONE_API_KEY=<YOUR_API_KEY>
 PINECONE_INDEX="test" // you only need the name here not the entire string
 PINECONE_NAMESPACE="demo" // optional namespace
-PINECONE_ENVIROMENT="us-central1-gcp"
+PINECONE_ENVIRONMENT="us-central1-gcp"
 
 ```
 10. Save the changes made to the .env file.

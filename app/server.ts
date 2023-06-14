@@ -20,7 +20,7 @@ if (discordConfig.token){
 export const pinecone = new PineconeClient();
 async function main(): Promise<void> {
     await pinecone.init({
-        environment: process.env.PINECONE_ENVIROMENT || "us-central1-gcp",
+        environment: process.env.PINECONE_ENVIRONMENT || "us-central1-gcp",
         apiKey: process.env.PINECONE_API_KEY || "",
     });
 }
