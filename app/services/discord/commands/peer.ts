@@ -8,9 +8,12 @@ export default {
         .setName("peer")
         .setDescription("Ask PeerBot a question.")
         .addStringOption((option) =>
-            option.setName("question")
-                .setDescription("How can I help you?")
+            option
+                .setName("question")
+                .setRequired(true)
+                .setDescription("What is your question?")
         ),
+
     async execute(interaction: any) {
 
         const question = interaction.options.getString("question");
