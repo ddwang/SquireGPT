@@ -3,8 +3,8 @@ import { pinecone } from '../../server';
 
 export const embed = async (docs: any) => {
 
-    const { OpenAIEmbeddings } = await import("langchain/embeddings");
-    const { PineconeStore } = await import("langchain/vectorstores");
+    const { OpenAIEmbeddings } = await import("langchain/embeddings/openai");
+    const { PineconeStore } = await import("langchain/vectorstores/pinecone");
 
     try {
         // 

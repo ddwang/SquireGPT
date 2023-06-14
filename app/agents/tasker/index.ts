@@ -10,7 +10,7 @@ type Task = {
 let table_name: any = process.env.TASKER_TABLE;
 
 async function get_ada_embedding(text: string): Promise<number[]> {
-    const { OpenAIEmbeddings } = await import("langchain/embeddings");
+    const { OpenAIEmbeddings } = await import("langchain/embeddings/openai");
 
     const embeddings = new OpenAIEmbeddings({batchSize: 1});
 

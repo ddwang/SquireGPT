@@ -8,7 +8,7 @@ export class ConversationAgent {
   }
 
   async getResponse(question: string) {
-    const { OpenAI } = await import('langchain/llms/openai');
+    const { OpenAI } = await import("langchain/llms/openai");
     const { OpenAIEmbeddings } = await import("langchain/embeddings/openai");
     const { PineconeStore } = await import("langchain/vectorstores/pinecone");
     const { ConversationalRetrievalQAChain } = await import("langchain/chains");
@@ -38,7 +38,7 @@ export class ConversationAgent {
 
   async getResponseWithoutContext(question: string) {
 
-    const { OpenAI } = await import('langchain/llms');
+    const { OpenAI } = await import('langchain/llms/openai');
     const { ConversationChain } = await import("langchain/chains");
 
     const model = new OpenAI({ modelName: process.env.OPENAI_MODEL });
